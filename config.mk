@@ -4,7 +4,7 @@ VERSION = 6.2
 # Customize below to fit your system
 
 # paths
-PREFIX = /usr/local
+PREFIX = /home/hb261508/Software
 MANPREFIX = ${PREFIX}/share/man
 
 X11INC = /usr/X11R6/include
