@@ -11,12 +11,22 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+<<<<<<< HEAD
 static const char *fonts[]          = { "DejaVuSansMono Nerd Font:size=12" };
 static const char dmenufont[]       = "DejaVuSansMono Nerd Font:size=12";
+=======
+static const char *fonts[]          = { "monospace:size=18" };
+static const char dmenufont[]       = "monospace:size=18";
+//static const char col_gray1[]       = "#222222"; original
+>>>>>>> 28fc9e5f29001b44d76436a294c3afb4f00a0c77
 static const char col_gray1[]       = "#303030";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
+<<<<<<< HEAD
+=======
+//static const char col_cyan[]        = "#005577"; original
+>>>>>>> 28fc9e5f29001b44d76436a294c3afb4f00a0c77
 static const char col_cyan[]        = "#5c5cff";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
