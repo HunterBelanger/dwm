@@ -5,46 +5,22 @@
 
 Get_Volume () {
     # First check for mute
-    mute=$(pamixer --get-mute)
-    if [ $mute = "true"  ]
+    mute=$(amixer get Master | awk '$0~/%/{print $6}' | tr -d '[]')
+    if [ $mute = "off"  ]
     then
-        local retval="X----------"
+        local retval="ﱝ"
     else
         # If not mute, get volume
-        vol=$(pamixer --get-volume)
-        if [ $((vol)) = 0  ]
+        vol=$(amixer get Master | awk '$0~/%/{print $4}' | tr -d '[]%')
+        if [ $((vol)) -ge 0 -a $((vol)) -le 33  ]
         then
-            local retval="|----------"
-        elif [ $((vol)) -gt 0 -a $((vol)) -le 10  ]
+            local retval="奄:$vol"
+        elif [ $((vol)) -gt 33 -a $((vol)) -le 66  ]
         then
-            local retval="-|----------"
-        elif [ $((vol)) -gt 10 -a $((vol)) -le 20  ]
+            local retval="奔:$vol"
+        elif [ $((vol)) -gt 66 ]
         then
-            local retval="--|--------"
-        elif [ $((vol)) -gt 20 -a $((vol)) -le 30  ]
-        then
-            local retval="---|-------"
-        elif [ $((vol)) -gt 30 -a $((vol)) -le 40  ]
-        then
-            local retval="----|------"
-        elif [ $((vol)) -gt 40 -a $((vol)) -le 50  ]
-        then
-            local retval="-----|-----"
-        elif [ $((vol)) -gt 50 -a $((vol)) -le 60  ]
-        then
-            local retval="------|----"
-        elif [ $((vol)) -gt 60 -a $((vol)) -le 70  ]
-        then
-            local retval="-------|---"
-        elif [ $((vol)) -gt 70 -a $((vol)) -le 80  ]
-        then
-            local retval="--------|--"
-        elif [ $((vol)) -gt 80 -a $((vol)) -le 90  ]
-        then
-            local retval="---------|-"
-        elif [ $((vol)) -gt 90 -a $((vol)) -le 100  ]
-        then
-            local retval="----------|"
+            local retval="墳:$vol"
         fi
     fi
 
@@ -53,7 +29,7 @@ Get_Volume () {
     }
 
 Get_Keyboard () {
-    KYBRD=$(setxkbmap -v | awk -F "+" '/symbols/ {print $2}')
+    KYBRD=$(setxkbmap -print | grep xkb_symbols | awk '{print $4}' | awk -F"+" '{print $2}')
     if [ $KYBRD = "us"  ]
     then
         local retval="US"
@@ -64,26 +40,15 @@ Get_Keyboard () {
     echo "$retval"
 }
 
-Get_Charging () {
-    BATTERY_CHRG=$(cat /sys/class/power_supply/BAT0/status)
-    if [ $BATTERY_CHRG = "Charging" ]
-    then
-        local retval="+"
-    else
-        local retval="-"
-    fi
-
-    echo "$retval"
-}
 
 while true; do
-    BATTERY_PERC=$(cat /sys/class/power_supply/BAT0/capacity)
     DATE=$(date +'%d/%m/%y')
     TIME=$(date +'%H:%M')
     
-    STATUS=" KBD:$(Get_Keyboard)  VOL:$(Get_Volume)  BAT:$(Get_Charging)$BATTERY_PERC  |  $DATE  $TIME "
+    STATUS=" :$(Get_Keyboard)  $(Get_Volume)   $DATE  $TIME "
 
     xsetroot -name "${STATUS}"
+    #echo "$STATUS"
     sleep 1
 
 done
